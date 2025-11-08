@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OfficeApp
+  xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:type="MailApp">
+
+  <Id>8e9f4b7e-2c6a-47d1-9e1a-ccf1f3c0c999</Id>
+  <Version>1.0.0.0</Version>
+  <ProviderName>Circet</ProviderName>
+  <DefaultLocale>fr-FR</DefaultLocale>
+  <DisplayName DefaultValue="Circet Mail Generator" />
+  <Description DefaultValue="Générer objet/corps, destinataires, CC et pièce jointe directement dans un nouveau mail Outlook." />
+
+  <IconUrl DefaultValue="https://daveisa88.github.io/circet-mail-generator/assets/logo.png" />
+  <HighResolutionIconUrl DefaultValue="https://daveisa88.github.io/circet-mail-generator/assets/logo.png" />
+
+  <SupportUrl DefaultValue="https://daveisa88.github.io/circet-mail-generator/" />
+
+  <Hosts>
+    <Host Name="Mailbox" />
+  </Hosts>
+
+  <Requirements>
+    <Sets DefaultMinVersion="1.8">
+      <Set Name="Mailbox" MinVersion="1.8" />
+    </Sets>
+  </Requirements>
+
+  <FormSettings>
+    <Form xsi:type="ItemCompose">
+      <DesktopSettings>
+        <SourceLocation DefaultValue="https://daveisa88.github.io/circet-mail-generator/addin/taskpane.html" />
+      </DesktopSettings>
+      <TabletSettings>
+        <SourceLocation DefaultValue="https://daveisa88.github.io/circet-mail-generator/addin/taskpane.html" />
+      </TabletSettings>
+      <PhoneSettings>
+        <SourceLocation DefaultValue="https://daveisa88.github.io/circet-mail-generator/addin/taskpane.html" />
+      </PhoneSettings>
+    </Form>
+  </FormSettings>
+
+  <Permissions>ReadWriteItem</Permissions>
+  <Rule xsi:type="RuleCollection" Mode="And">
+    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Edit" />
+  </Rule>
+  <DisableEntityHighlighting>false</DisableEntityHighlighting>
+</OfficeApp>

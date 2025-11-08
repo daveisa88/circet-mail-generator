@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Générateur de Mails Circet</title>
+
+<link rel="stylesheet" href="./styles.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<!-- Office.js ne sera utile que si la page est chargée depuis le complément -->
+<script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+</head>
+<body>
+<header class="hdr">
+  <img class="logo" src="https://i.imgur.com/gfK7XhS.png" alt="Circet" />
+  <h1>Générateur de mails Circet Orange Fibre</h1>
+</header>
+
+<section class="card">
+  <div class="row">
+    <div>
+      <label>Type :</label>
+      <select id="typeMail"></select>
+    </div>
+    <div>
+      <label>Région :</label>
+      <select id="region"></select>
+    </div>
+    <div>
+      <label>Date :</label>
+      <input type="date" id="date" />
+    </div>
+    <div>
+      <label>Heure :</label>
+      <select id="heure">
+        <option>10h</option><option>12h</option><option>14h</option>
+        <option>15h30</option><option>16h</option><option>18h</option>
+      </select>
+    </div>
+  </div>
+
+  <label>📧 Destinataires :</label>
+  <textarea id="toEmails"></textarea>
+  <div class="btns">
+    <button class="btn" onclick="handleImport('toEmails')">📂 Charger Excel Destinataires</button>
+    <input type="file" id="fileTo" accept=".xlsx" style="display:none" onchange="loadExcel(this,'toEmails')">
+  </div>
+
+  <label>📤 En copie (CC) :</label>
+  <textarea id="ccEmails"></textarea>
+  <div class="btns">
+    <button class="btn" onclick="handleImport('ccEmails')">📂 Charger Excel CC</button>
+    <input type="file" id="fileCc" accept=".xlsx" style="display:none" onchange="loadExcel(this,'ccEmails')">
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <button class="btn primary" onclick="genererMail()">📧 Générer le mail</button>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Objet :</h2>
+  <textarea id="objet" readonly></textarea>
+
+  <h2>Corps :</h2>
+  <textarea id="corps" readonly></textarea>
+
+  <h2>Joindre une pièce au mail</h2>
+  <div class="row">
+    <input id="attachmentInput" type="file" />
+  </div>
+
+  <div class="row">
+    <button class="btn" onclick="ouvrirOutlook()">📤 Ouvrir Outlook (mailto)</button>
+    <!-- Visible uniquement quand la page est dans le complément -->
+    <button id="btnInsertOutlook" class="btn primary" style="display:none" onclick="insertIntoOutlookFromAddin()">📥 Insérer dans Outlook (complément)</button>
+  </div>
+  <p class="hint" id="addinHint" style="display:none">Astuce : ce bouton utilise le complément Outlook et permet aussi d’ajouter la pièce jointe locale dans le brouillon ✨</p>
+</section>
+
+<section class="card">
+  <h2>➕ Ajouter un mapping Type/Région (corps par défaut)</h2>
+  <label>Type :</label>
+  <input id="newType" placeholder="ex: Avancement de prod" />
+  <label>Région :</label>
+  <input id="newRegion" placeholder="ex: IDF (laisser vide = national)" />
+  <label>Corps personnalisé :</label>
+  <textarea id="newBody" placeholder="Texte par défaut pour ce type/région"></textarea>
+  <div class="btns">
+    <button class="btn" onclick="ajouterMapping()">✅ Ajouter</button>
+    <button class="btn danger" onclick="resetMappings()">🗑️ Réinitialiser mappings</button>
+  </div>
+</section>
+
+<script src="./app.js"></script>
+<script>
+  // Affiche le bouton spécial si la page est dans le complément Outlook
+  (function showAddinButtonsWhenReady() {
+    if (window.Office && Office.onReady) {
+      Office.onReady().then(function() {
+        const b = document.getElementById('btnInsertOutlook');
+        const p = document.getElementById('addinHint');
+        b.style.display = 'inline-block';
+        p.style.display = 'block';
+      });
+    }
+  })();
+</script>
+</body>
+</html>
